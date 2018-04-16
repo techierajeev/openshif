@@ -6,6 +6,10 @@ I assume before going through this doc you must have the basic idea about the he
 
 In this example i am having openshift cluster with 3 master and 5 nodes (all centos machine 7.4 ), gluster server and heketi are running dedicated on the machine not as a container.
 
+Prerequisite :
+
+	1: password less login to all nodes in the glusterfs cluster from heketi node, create the
+
 Step 1: first we need to setup gluster cluster , in gluster-cluster comprises all the 3 master ,
 	steps to install and setup gluster cluster :-
 
@@ -50,6 +54,8 @@ now starts the heketi part.
 
 Step 5: install heketi and heketi-cli
 	
-
+	1: yum install heketi heketi-client -y
+	
+Step 6:
 
 
