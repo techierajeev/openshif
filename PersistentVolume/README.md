@@ -8,19 +8,26 @@ In this example i am having openshift cluster with 3 master and 5 nodes (all cen
 
 Step 1: first we need to setup gluster cluster , in gluster-cluster comprises all the 3 master ,
 	steps to install and setup gluster cluster :-
+
+
 	1: yum install centos-release-gluster312 -y
 	2: yum install glusterfs-server
 	3: systemctl restart glusterd
 	4: systemctl status glusterd
 	5: systemctl enable glusterd	
+
+
     These 5 commands must be executes on all the nodes which will be in gluster cluster
 
 Step 2: Disable the firewall
+
+
 	1: systemctl status  firewalld (if running)
 	2: systemctl stop firewalld
 	3: systemctl disable firewalld
 
 Step 3: check the status of selinux
+
 	1: getenforce
 	  if it is in disbled mode then its okay, if enforcing/permissive then :
 	vi /etc/selinux/config 
@@ -28,6 +35,7 @@ Step 3: check the status of selinux
 	2: setenforce 0
 
 Step 4: now go to any of one machine of gluster and execute the following command:
+	
 	1: gluster peer probe ${IPADDR}
 	add the ip of all the machines which you want to keep in the cluster.
 
