@@ -56,8 +56,24 @@ Step 5: install heketi and heketi-cli
 	
 	1: yum install heketi heketi-client -y
 	
-Step 6: 
-	1: cd /etc/heketi
-	2: 
+Step 6: configuring Heketi
 
+	1: cd /etc/heketi/
+	2: go through heketi.json file and configure it accordingly
+	3: get the sample topology.json file from repository and modify it accordingly.
+	4: systemctl restart heketi
+	5: systemctl enable heketi
 
+Step 7: checking if heketi is creating volumes:-
+
+	1: export HEKETI_CLI_SERVER=${IP}:8080
+	2: heketi-cli volume create --size 1
+
+Step 8: if volume creation suceeds then check the /etc/fstab file all volumes created and mount point entry must be there. Do not restart/power off the machine in between volume creation/deletion commands executes, if fstab entry don't get remived properly then machine may crash after reboot.
+
+Step 9: create the storage class 
+
+	1: oc create -f sc.yml
+
+Step 10: make the pvc request , pv will be created dynamically and volume will get mountes to it.
+ 
