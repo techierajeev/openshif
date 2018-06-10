@@ -4,13 +4,13 @@ This Repository Contains Steps involved in Dynamic Volume Provisioning using glu
 
 I assume before going through this doc you must have the basic idea about the heketi and glusterfs, and also about Persistent Volume Concept in kubernetes or openshift 
 
-In this example i am having openshift cluster with 3 master and 5 nodes (all centos machine 7.4 ), gluster server and heketi are running dedicated on the machine not as a container.
+In this example i am having openshift cluster with 3 master and 5 nodes (all centos machine 7.4 ), gluster server and heketi are running dedicated on the machine and not as a container.
 
 Prerequisite :
 
-	1: password less login to all nodes in the glusterfs cluster from heketi node, create the
+	1: password less login to all nodes in the glusterfs cluster from heketi node.
 
-Step 1: first we need to setup gluster cluster , in gluster-cluster comprises all the 3 master ,
+Step 1: first we need to setup gluster cluster,
 	steps to install and setup gluster cluster :-
 
 
@@ -23,7 +23,7 @@ Step 1: first we need to setup gluster cluster , in gluster-cluster comprises al
 
     These 5 commands must be executes on all the nodes which will be in gluster cluster
 
-Step 2: Disable the firewall
+Step 2: Disable the firewall/Bypass the services
 
 
 	1: systemctl status  firewalld (if running)
@@ -48,7 +48,7 @@ Step 4: now go to any of one machine of gluster and execute the following comman
 
 	other hosts must be in connected state
 
-those who already have their cluster cluster ready can skip step 1 and step 4
+those who already have their gluster cluster ready can skip step 1 and step 4
 
 now starts the heketi part.  
 
@@ -56,6 +56,8 @@ Step 5: install heketi and heketi-cli
 	
 	1: yum install heketi heketi-client -y
 	
-Step 6:
+Step 6: 
+	1: cd /etc/heketi
+	2: 
 
 
