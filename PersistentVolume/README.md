@@ -71,9 +71,10 @@ Step 7: checking if heketi is creating volumes:-
 
 Step 8: if volume creation suceeds then check the /etc/fstab file all volumes created and mount point entry must be there. Do not restart/power off the machine in between volume creation/deletion commands executes, if fstab entry don't get remived properly then machine may crash after reboot.
 
-Step 9: create the storage class 
+Step 9: create the storage class and Secret if you are enabling authentication
 
-	1: oc create -f sc.yml
+	1: oc create -f <storageclassfile>.yml
+	2: oc create -f <secretfile>.yml
 
 Step 10: make the pvc request , pv will be created dynamically and volume will get mountes to it.
  
