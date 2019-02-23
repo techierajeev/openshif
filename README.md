@@ -1,38 +1,60 @@
-# openshift
-This repository contains practical scenarios of deployment, managing resources, persistent volumes, config maps and all on openshift origin.
-all practical implentation has been done on openshift origin version 3.6
+## Example of a PHP web application using Docker
 
 
-let's start from installing openshift origin :
+#### How does it work?
 
-Running Openshift On Ubuntu
+```bash
+# build the docker image
+docker build -t php-docker-apache-example .
 
-Using Release Download: -
+# run the docker container on this machine. Expose its internal
+# port 80 to this machine's port 8080
+docker run -d -p 8080:80 php-docker-apache-example
+```
 
-step 1:- wget https://github.com/openshift/origin/releases/download/v1.4.1/openshift-origin-server-v1.4.1-3f9807a-linux-64bit.tar.gz
-step 2:- tar xvzf openshift-origin-server-v1.4.1-3f9807a-linux-64bit.tar.gz
-step 3:- mv openshift-origin-server-v1.4.1+3f9807a-linux-64bit/ openshift-origin
-step 4:- cd openshift-origin
-step 5:- sudo ./openshift start 
+And you can see the result here:
+![screenshot](https://raw.githubusercontent.com/fuhrysteve/php-docker-apache-example/master/example.jpg)
 
-go to console using:- https://localhost:8443/console/
-username:- admin
-password:- admin
+```bash
+# to spin up additional containers on different ports, you might
+# do something like this:
+docker run -d -p 5000:80 php-docker-apache-example
+docker run -d -p 5001:80 php-docker-apache-example
+docker run -d -p 5002:80 php-docker-apache-example
+docker run -d -p 5003:80 php-docker-apache-example
+docker run -d -p 5004:80 php-docker-apache-example
+docker run -d -p 5005:80 php-docker-apache-example
+docker run -d -p 5006:80 php-docker-apache-example
+docker run -d -p 5007:80 php-docker-apache-example
+```
+Now you have 8 concurrent webservers running, all ready to serve
+traffic on 8 different ports. A load balancer would typically
+choose which container to send a request to based on load /
+availability / etc.
+
+If you wanted to deploy a new version of your software but are nervous
+of breaking something, you could spin up new containers and leave the
+old ones running. If anything bad happens, switching back to the old
+containers is quick and reliable.
 
 
-for details:-
-source https://docs.openshift.org/latest/getting_started/administrators.html#installation-methods
+#### More information
 
-
-Using Docker Image:-
-
-sudo docker run -d --name "origin" \
---privileged --pid=host --net=host \
--v /:/rootfs:ro -v /var/run:/var/run:rw -v /sys:/sys -v /var/lib/docker:/var/lib/docker:rw \
--v /var/lib/origin/openshift.local.volumes:/var/lib/origin/openshift.local.volumes:rslave \
-openshift/origin start
-
-
-then go to console using https://localhost:8443/console/
-username:- admin
-password:- admin
+* The PHP application code goes in `myapp/`
+* The first line of the Dockerfile `FROM php:7.0-apache` means "use
+  the official maintained image (which happens to be debian based)
+  with php version 7 and apache installed on it". When you rebuild your
+  images, you get any security updates along with it for free.
+* Developers are typically responsible for creating and maintaining 
+  the Dockerfile and any dependencies their code makes use of (for
+  example, if they want to use ImageMagick to convert images to
+  thumbnails, they will have to put it in the Dockerfile, otherwise
+  their code would break).
+* Applications should avoid writing to the filesystem (when uploading
+  files, for instance) and prefer to use object storage, such as
+  Amazon S3 instead. The reason for this is that it is a maintenance
+  headache. It is definitely possible. It is usually more annoying
+  than alternatives.
+* In development, the developer would likely also use a docker container
+  for MySQL / similar persistent data stores. In production, their Docker
+  container would likely connect to a different (managed) database.
